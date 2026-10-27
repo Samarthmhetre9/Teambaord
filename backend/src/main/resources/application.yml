@@ -1,0 +1,26 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/teamboard}
+    username: ${DB_USER:teamboard}
+    password: ${DB_PASSWORD:teamboard}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc.batch_size: 25
+        default_batch_fetch_size: 25
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+app:
+  cors-origin: ${CORS_ORIGIN:http://localhost:4200}
+  public-url: ${PUBLIC_URL:http://localhost:8080}
+  storage:
+    s3-bucket: ${S3_BUCKET:}      # empty = store files on local disk (./uploads)
+    region: ${AWS_REGION:ap-south-1}
+    local-dir: uploads

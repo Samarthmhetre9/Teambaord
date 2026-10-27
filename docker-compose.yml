@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: teamboard
+      POSTGRES_USER: teamboard
+      POSTGRES_PASSWORD: teamboard
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U teamboard"]
+      interval: 5s
+      retries: 10
+  backend:                       # optional: docker compose --profile full up --build
+    profiles: ["full"]
+    build: ./backend
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/teamboard
+      S3_BUCKET: ${S3_BUCKET:-}
+      AWS_REGION: ${AWS_REGION:-ap-south-1}
+    ports: ["8080:8080"]
+volumes:
+  pgdata:
