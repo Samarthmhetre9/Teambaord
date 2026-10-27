@@ -51,17 +51,5 @@ Without setup, files are saved in `backend/uploads`. To use S3:
 - Query tuning: composite index on `(project_id, status, position)`, `@EntityGraph` to avoid N+1 on sprint/epic, `default_batch_fetch_size`, DTOs so lazy entities never reach JSON, `open-in-view=false`.
 - Frontend: `BoardComponent` (CDK drag-and-drop, upserts events by id so duplicates are harmless), `TaskDetailComponent` (typed reactive form, live comments, uploads), `RealtimeService` (RxStomp, auto-reconnect).
 
-## 5. Resume
-**Project line:** TeamBoard: Real-Time Collaborative Project Management Tool | Java, Spring Boot, WebSocket/STOMP, PostgreSQL, Angular, TypeScript, Docker, AWS S3
-
-- Built a real-time task board with Spring WebSockets and STOMP, pushing task moves, edits and comments to every connected teammate without page refreshes.
-- Modeled epics, sprints, stories and comments with Hibernate/JPA on PostgreSQL; cut query load with composite indexes, entity graphs and DTO projections to remove N+1 lookups.
-- Developed a modular Angular + TypeScript UI with typed reactive forms and Angular CDK drag-and-drop, with server-side column reordering kept consistent across clients.
-- Integrated AWS S3 for task attachments, serving private files through short-lived presigned URLs; containerized Postgres and the API with Docker and Gradle.
-
-Before you claim "optimized": turn on `spring.jpa.show-sql=true`, load the board, and note the query count and timing before and after the entity graph. Quote a real number in interviews.
-
-**Interview talking points:** why STOMP topics per project/task; why events are idempotent (upsert by id); why moves renumber a whole column; why S3 uses presigned URLs; what you would add next (JWT auth, optimistic locking with `@Version`, Redis/RabbitMQ broker for multiple server instances, tests with Testcontainers).
-
 ## 6. Known limits (be upfront about these)
 No login: the "You are" box is just a display name. Sprints have no start/complete workflow yet. The in-memory STOMP broker supports a single backend instance.
